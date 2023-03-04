@@ -1,0 +1,7 @@
+﻿.panel{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    width: 10rem;
+    height: 10rem;
+}
