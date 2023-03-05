@@ -2,6 +2,32 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
+    place-items: center;
     width: 10rem;
     height: 10rem;
+    transition: background-color .25s ease;
+}
+@media screen and (max-width: 500px){
+    .panel{
+        width: 8rem;
+        height: 8rem;
+    }
+}
+@media screen and (max-width: 410px){
+    .panel{
+        width: 7rem;
+        height: 7rem;
+    }
+}
+.enabled{
+    background-color: #229de450;
+}
+.notenabled{
+    background-color: #ce352a50;
+}
+.victory_1{
+    background-color: #2cd19750;
+}
+.victory_-1{
+    background-color: #8fd23750;
 }

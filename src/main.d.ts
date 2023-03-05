@@ -21,9 +21,14 @@ type Immutable<T> =
                         : T extends object ? {readonly [K in keyof T]: Immutable<T[K]>;}
                             : T;
 //#endregion
-/**`0`：未落子；`1`：玩家；`-1`：另一玩家或电脑*/
-type nodeStatus = 0 | 1 | -1;
-/**`1`：玩家；`2`：另一玩家或电脑*/
-type turnStatus = 1 | -1;
-type panelData = Immutable<[nodeStatus, nodeStatus, nodeStatus, nodeStatus, nodeStatus, nodeStatus, nodeStatus, nodeStatus, nodeStatus]>;
-type statusData = Immutable<[panelData, panelData, panelData, panelData, panelData, panelData, panelData, panelData, panelData]>;
+/**`0`：未开始游戏；`1`：玩家×；`-1`：另一玩家或电脑○*/
+type turnStatus = 0 | 1 | -1;
+/**`0`：未胜利；`1`：玩家×；`-1`：另一玩家或电脑○*/
+type victoryStatus = 0 | 1 | -1;
+/**`0`：未落子；`1`：玩家×；`-1`：另一玩家或电脑○*/
+type positionStatus = 0 | 1 | -1;
+type panelData = [positionStatus, positionStatus, positionStatus, positionStatus, positionStatus, positionStatus, positionStatus, positionStatus, positionStatus];
+type boardData = [panelData, panelData, panelData, panelData, panelData, panelData, panelData, panelData, panelData];
+/**`0`：未决出胜负；`1`：*/
+type panelStatus = 0 | 1 | -1 | 2;
+type boardStatus = [boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean];

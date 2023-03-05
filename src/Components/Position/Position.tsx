@@ -1,9 +1,9 @@
-﻿import React, { Component as Cp } from "react";
+﻿import React from "react";
 import styles from "./Position.module.css";
 import url_cross from "./1.png";
 import url_circle from "./2.png";
 type Props = {
-    statusData :nodeStatus;
+    statusData :positionStatus;
     updateStatus :()=>void;
 };
 export default function Position(props :Props){

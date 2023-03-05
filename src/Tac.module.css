@@ -1,0 +1,47 @@
+﻿.main{
+    width: 60vw;
+}
+@media screen and (max-width: 1200px){
+    .main{
+        width: 70vw;
+    }
+}
+@media screen and (max-width: 900px){
+    .main{
+        width: 80vw;
+    }
+}
+@media screen and (max-width: 700px){
+    .main{
+        width: 95vw;
+    }
+}
+.control{
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 1rem;
+    padding: 2rem;
+    justify-content: center;
+    align-items: center;
+}
+.button{
+    height: 3rem;
+    width: 6rem;
+    font-size: 1.1rem;
+    transition: background-color .2s ease;
+    border: none;
+    background-color: #a5cee9;
+    border-radius: .5rem;
+    cursor: pointer;
+}
+.button:hover{
+    background-color: #5eb2e9;
+}
+.button:active{
+    background-color: #81bee7;
+    transition-duration: .1s;
+}
+.button:disabled{
+    background-color: lightgrey !important;
+    cursor: unset;
+}
