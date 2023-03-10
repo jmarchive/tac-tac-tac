@@ -4,12 +4,9 @@ import Board from "./Components/Board";
 import url_cross from "./Components/Position/1.png";
 import url_circle from "./Components/Position/2.png";
 type State = Readonly<{
-    history :boardData[];
-    turn :turnStatus;
-    //prevUpdate :coord | null | undefined;
-    availablePanels :[boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean];
-    //可以将panel本身理解为大棋盘的一个position
-    panelVictory :panelData;
+    data_history :boardData[];
+    status :boardStatus;
+    turn :turn;
 }>;
 /**@once */
 export default class Tac extends Cp<{}, State>{
@@ -18,10 +15,9 @@ export default class Tac extends Cp<{}, State>{
     //getter的意义是防止修改
     get defaultState() :State{
         return{
-            history: [this.cloneOrGenerateHistoryEntry()],
-            turn: 0 as turnStatus,
-            availablePanels: [false, false, false, false, false, false, false, false, false],
-            panelVictory :[0,0,0,0,0,0,0,0,0] as panelData
+            data_history: [this.cloneOrGenerateHistoryEntry()],
+            turn: 0 as turn,
+            status: [-2,-2,-2,-2,-2,-2,-2,-2,-2] as boardStatus
         };
     }
     constructor(props :{}){
@@ -31,7 +27,7 @@ export default class Tac extends Cp<{}, State>{
     initializeGame = ()=>{
         this.setState(this.defaultState, ()=>{
             this.setState({
-                availablePanels: [true, true, true, true, true, true, true, true, true],
+                status: [0,0,0,0,0,0,0,0,0],
                 turn: 1
             });
         });
@@ -43,39 +39,50 @@ export default class Tac extends Cp<{}, State>{
     }
     updateBoard = (panel :number, position :number)=>{
         this.setState(state=>{
-            const history = [...state.history], current = this.cloneOrGenerateHistoryEntry(state.history[state.history.length - 1]);
-            current[panel][position] = state.turn;
-            history.push(current);
+            const history = [...state.data_history], currentHistory = this.cloneOrGenerateHistoryEntry(state.data_history[state.data_history.length - 1]);
+            currentHistory[panel][position] = state.turn;
+            history.push(currentHistory);
             return{ ...state,
-                history,
-                turn: -state.turn as turnStatus,
-                prevUpdate: [panel, position]
+                data_history: history,
+                turn: -state.turn as turn
             }
-        }, ()=>{
-            const current = this.state.history[this.state.history.length - 1], panelVictory = [];
-            for(let i = 0; i < 9; i++) panelVictory.push(this.checkVictory(current[i]));
-            const finalVictory = this.checkVictory(panelVictory as panelData);
+        }, ()=>{ //判断胜利及panel可用性
+            const currentHistory = this.state.data_history[this.state.data_history.length - 1], boardStatus = [...this.state.status] as unknown as boardStatus;
+            //#region panel禁用与启用
+            //先将所有能禁用的panel都禁用
+            for(let i = 0; i < 9; i++) if(boardStatus[i] === 0) boardStatus[i] = -2;
+            //检查自己胜利状态
+            const currentPanelStatus = this.checkVictory(currentHistory[panel]);
+            boardStatus[panel] = currentPanelStatus === 0 ? -2 : currentPanelStatus;
+            if(boardStatus[position] === -2) boardStatus[position] = 0;
+            //指向锁定panel，启用其他所有panel
+            else for(let i = 0; i < 9; i++) if(boardStatus[i] === -2) boardStatus[i] = 0;
+            //#endregion
+            const finalVictory = this.checkVictory(boardStatus);
             if(finalVictory !== 0) this.endGame(finalVictory);
-            else this.setState({panelVictory: panelVictory as panelData});
-            console.log(current, panelVictory, finalVictory);
+            else this.setState({status: boardStatus as boardStatus});
+            console.log(currentHistory, boardStatus, finalVictory);
         });
     }
-    checkVictory(panelData :panelData) :victoryStatus{
+    /**不能知道panel的可用性！！！*/
+    checkVictory(statusData :panelData | boardStatus) :victoryStatus{
         const splitData = [
             //斜
-            [panelData[0], panelData[4], panelData[8]],
-            [panelData[2], panelData[4], panelData[6]],
+            [statusData[0], statusData[4], statusData[8]],
+            [statusData[2], statusData[4], statusData[6]],
             //横
-            [panelData[0], panelData[1], panelData[2]],
-            [panelData[3], panelData[4], panelData[5]],
-            [panelData[6], panelData[7], panelData[8]],
+            [statusData[0], statusData[1], statusData[2]],
+            [statusData[3], statusData[4], statusData[5]],
+            [statusData[6], statusData[7], statusData[8]],
             //纵
-            [panelData[0], panelData[3], panelData[6]],
-            [panelData[1], panelData[4], panelData[7]],
-            [panelData[2], panelData[5], panelData[8]],
+            [statusData[0], statusData[3], statusData[6]],
+            [statusData[1], statusData[4], statusData[7]],
+            [statusData[2], statusData[5], statusData[8]],
         ];
-        for(let i = 0; i < 8; i++) if(splitData[i][0] !== 0 && splitData[i][0] === splitData[i][1] && splitData[i][0] === splitData[i][2]) return splitData[i][0] as victoryStatus;
-        return 0;
+        //这里已经排除了-2，所以可以断言
+        for(let i = 0; i < splitData.length; i++) if(splitData[i][0] !== 0 && splitData[i][0] !== -2 && splitData[i][0] === splitData[i][1] && splitData[i][0] === splitData[i][2]) return splitData[i][0] as victoryStatus;
+        if(statusData[0] === 0 || statusData[0] === -2 || statusData[1] === 0 || statusData[1] === -2 || statusData[2] === 0 || statusData[2] === -2 || statusData[3] === 0 || statusData[3] === -2 || statusData[4] === 0 || statusData[4] === -2 || statusData[5] === 0 || statusData[5] === -2 || statusData[6] === 0 || statusData[6] === -2 || statusData[7] === 0 || statusData[7] === -2 || statusData[8] === 0 || statusData[8] === -2) return 0;
+        else return 2;
     }
     changeMode = (event :React.ChangeEvent<HTMLInputElement>)=>{
         this.isComputerBased = event.target.checked;
@@ -105,9 +112,9 @@ export default class Tac extends Cp<{}, State>{
                     }}></div>
                 </div>
                 <Board
-                    statusData={this.state.history[this.state.history.length - 1]}
+                    statusData={this.state.data_history[this.state.data_history.length - 1]}
                     updateBoard={this.updateBoard}
-                    availablePanels={this.state.availablePanels}
+                    availablePanels={this.state.status}
                 />
             </div>
         );

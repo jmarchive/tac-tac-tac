@@ -22,13 +22,13 @@ type Immutable<T> =
                             : T;
 //#endregion
 /**`0`：未开始游戏；`1`：玩家×；`-1`：另一玩家或电脑○*/
-type turnStatus = 0 | 1 | -1;
-/**`0`：未胜利；`1`：玩家×；`-1`：另一玩家或电脑○*/
-type victoryStatus = 0 | 1 | -1;
+type turn = 0 | 1 | -1;
+/**`0`：未胜利且可用；`-2`：未胜利但不可用；`1`：玩家×；`-1`：另一玩家或电脑○；`2`：平局*/
+type panelStatus = 0 | -2 | 1 | -1 | 2;
+/**`0`：未胜利；`1`：玩家×；`-1`：另一玩家或电脑○；`2`：平局*/
+type victoryStatus = 0 | 1 | -1 | 2;
+type boardStatus = [panelStatus, panelStatus, panelStatus, panelStatus, panelStatus, panelStatus, panelStatus, panelStatus, panelStatus];
 /**`0`：未落子；`1`：玩家×；`-1`：另一玩家或电脑○*/
-type positionStatus = 0 | 1 | -1;
-type panelData = [positionStatus, positionStatus, positionStatus, positionStatus, positionStatus, positionStatus, positionStatus, positionStatus, positionStatus];
+type positionData = 0 | 1 | -1;
+type panelData = [positionData, positionData, positionData, positionData, positionData, positionData, positionData, positionData, positionData];
 type boardData = [panelData, panelData, panelData, panelData, panelData, panelData, panelData, panelData, panelData];
-/**`0`：未决出胜负；`1`：*/
-type panelStatus = 0 | 1 | -1 | 2;
-type boardStatus = [boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean];
