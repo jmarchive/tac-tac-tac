@@ -69,7 +69,7 @@ export default class Tac extends Cp<{}, State>{
         if(finalVictory !== 0){
             for(let i = 0; i < 9; i++) if(boardStatus[i] === 0) boardStatus[i] = -2;
             this.setState({
-                tips: `${finalVictory === 1 ? "×" : "○"} 赢得了游戏！`,
+                tips: finalVictory === 1 ? "× 赢得了游戏！" : finalVictory === -1 ? "○ 赢得了游戏！" : "————握手言和————",
                 gameStarted: false
             });
         }
@@ -156,7 +156,7 @@ export default class Tac extends Cp<{}, State>{
             <div className={styles.main}>
                 <div className={styles.panel}>
                     <div>
-                        <h1 onPointerUp={this.toggleAbout}>{this.title}</h1>
+                        <h1 onClick={this.toggleAbout}>{this.title}</h1>
                         <small>©2019-2023 LJM12914.&emsp;<a target="_blank" href="https://github.com/jmarchive/tac-tac-tac/blob/main/README.zh-hans.md#%E8%A7%84%E5%88%99">游戏规则</a></small>
                         <div>{this.state.tips}</div>
                     </div>
