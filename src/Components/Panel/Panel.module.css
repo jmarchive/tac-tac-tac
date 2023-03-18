@@ -6,6 +6,9 @@
     width: 10rem;
     height: 10rem;
     transition: background-color .25s ease;
+    background-repeat: no-repeat;
+    background-size: 60% 60%;
+    background-position: center center;
 }
 @media screen and (max-width: 500px){
     .panel{
@@ -20,14 +23,8 @@
     }
 }
 .enabled{
-    background-color: #229de450;
+    background-color: #229de440;
 }
 .notenabled{
     background-color: #ce352a50;
-}
-.victory_1{
-    background-color: #2cd19750;
-}
-.victory_-1{
-    background-color: #8fd23750;
 }
