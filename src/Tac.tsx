@@ -33,7 +33,7 @@ export default class Tac extends Cp<{}, State>{
     initializeGame = ()=>{
         this.setState(this.defaultState, ()=>{
             this.setState({
-                status: [0,0,0,0,0,0,0,0,0],
+                status: [0,0,0,0,-2,0,0,0,0],
                 turn: 1,
                 gameStarted: true
             });
