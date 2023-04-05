@@ -12,6 +12,7 @@ This project is a part of LJM12914's Classic Remake Project. I learned the game 
 2. Every grid is considered as a checker of the big chessplate, and the victory of the grid is considered a placement in the big chessplate. The chessplate's judgement of victory follows the traditional Tic-tac-toe gamerule.
 3. The first chess piece can be placed at any positions. The followed pieces should be placed in the grid which locates in the big chessplate as the former placement's location in the grid.
 4. Once a player get victory in a grid or a grid is drawn, this grid is locked and any placement leads to the grid by rule 3 can be placed at any positions.
+5. For fairness reasons, the offensive cannot place chess pieces in the center grid.
 
 ## Interacts
 
