@@ -2,8 +2,6 @@ English | [中文](README.zh-hans.md)
 
 # Tac-tac-tac
 
-## 注意：本仓库为林峻茗转专业的支持材料。
-
 An improved Tic-tac-toe game which does have some difficulty.
 
 This project is a part of LJM12914's Classic Remake Project. I learned the game from my Junior High School classmates.
